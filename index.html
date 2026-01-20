@@ -11,6 +11,49 @@ body{
   font-family: Arial, sans-serif;
   background:#ffeef2;
   text-align:center;
+  /* PAGE ANIMATION */
+section {
+  animation: fadeSlide 0.8s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* BUTTON PULSE */
+button:hover {
+  animation: pulse 0.6s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+/* IMAGE FLOAT */
+img {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+/* GAME CARD POP */
+.card:active {
+  transform: scale(0.9);
+}
+
 }
 
 section{
