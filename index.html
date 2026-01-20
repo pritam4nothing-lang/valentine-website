@@ -1,133 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Happy Valentine’s Day ❤️</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>A Valentine For You ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      color: #fff;
-      text-align: center;
-    }
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#fff0f5;
+  color:#444;
+  overflow-x:hidden;
+}
+section{padding:60px 20px;min-height:100vh}
+h1,h2{text-align:center;color:#ff5c8a}
+p{text-align:center;max-width:700px;margin:10px auto}
+button{
+  background:#ff5c8a;
+  border:none;
+  padding:12px 26px;
+  border-radius:30px;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
 
-    .page {
-      display: none;
-      min-height: 100vh;
-      padding: 40px 20px;
-    }
+/* Loader */
+#loader{
+  position:fixed;inset:0;
+  background:#ffe4ec;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+}
+.bar{
+  width:220px;height:10px;
+  background:#ffd1dc;
+  border-radius:20px;
+  overflow:hidden;
+}
+.bar span{
+  display:block;height:100%;
+  width:0;background:#ff5c8a;
+  animation:load 3s forwards;
+}
+@keyframes load{to{width:100%}}
 
-    .active {
-      display: block;
-    }
+/* Envelope */
+.envelope{
+  width:260px;height:160px;
+  margin:40px auto;
+  background:#ffb6c1;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+}
+.envelope:before{
+  content:"";
+  position:absolute;
+  top:0;left:0;
+  width:100%;height:100%;
+  background:linear-gradient(135deg,#ffc0cb 50%,transparent 50%);
+}
+.hidden{display:none}
 
-    h1 {
-      font-size: 2.2em;
-      margin-bottom: 10px;
-    }
+/* Cards */
+.card{
+  background:#fff;
+  border-radius:20px;
+  padding:30px;
+  margin:20px auto;
+  max-width:720px;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
 
-    p {
-      font-size: 1.1em;
-      max-width: 600px;
-      margin: 0 auto 20px;
-    }
+/* Gallery */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
+}
+.gallery img{
+  width:100%;
+  border-radius:16px;
+}
 
-    button {
-      padding: 12px 24px;
-      margin: 10px;
-      border: none;
-      border-radius: 30px;
-      background: #ff4d6d;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #ff2f5e;
-    }
-
-    /* Music Player */
-    audio {
-      margin-top: 30px;
-      width: 90%;
-      max-width: 400px;
-    }
-
-    /* Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      margin-top: 30px;
-    }
-
-    .gallery img {
-      width: 100%;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
-  </style>
+/* Game */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  max-width:420px;
+  margin:20px auto;
+}
+.tile{
+  background:#ffb6c1;
+  border-radius:12px;
+  padding:30px 0;
+  font-size:22px;
+  text-align:center;
+  cursor:pointer;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- HOME PAGE -->
-  <div class="page active" id="home">
-    <h1>Happy Valentine’s Day ❤️</h1>
+<!-- LOADER -->
+<div id="loader">
+  <h2>A Valentine Moment</h2>
+  <div class="bar"><span></span></div>
+</div>
+
+<!-- INTRO -->
+<section id="intro" class="hidden">
+  <h1>A Valentine Note 💌</h1>
+  <div class="envelope" onclick="openLetter()"></div>
+  <p>Click to open</p>
+</section>
+
+<!-- LETTER -->
+<section id="letter" class="hidden">
+  <div class="card">
+    <h2>Hey ❤️</h2>
     <p>
-      This little website is made with love, just for you.
-      Every page has a small piece of my heart 💕
+      I wanted to do something special today,  
+      not grand — just honest.  
+      This is a small reminder that you matter.
     </p>
-
-    <button onclick="goTo('music')">🎵 Music</button>
-    <button onclick="goTo('photos')">🖼️ Our Photos</button>
-  </div>
-
-  <!-- MUSIC PAGE -->
-  <div class="page" id="music">
-    <h1>Our Song 🎶</h1>
     <p>
-      This song reminds me of you, every single time.
+      No pressure. No expectations.  
+      Just something sincere, from the heart.
     </p>
-
-    <!-- Replace song.mp3 with your music file -->
-    <audio controls>
-      <source src="song.mp3" type="audio/mpeg">
-      Your browser does not support audio.
-    </audio>
-
-    <br>
-    <button onclick="goTo('home')">⬅ Back</button>
-  </div>
-
-  <!-- PHOTOS PAGE -->
-  <div class="page" id="photos">
-    <h1>Our Memories 💞</h1>
-    <p>
-      Some moments, some smiles, forever in my heart.
-    </p>
-
-    <div class="gallery">
-      <!-- Replace image names with your photos -->
-      <img src="pic1.jpg">
-      <img src="pic2.jpg">
-      <img src="pic3.jpg">
-      <img src="pic4.jpg">
+    <div style="text-align:center">
+      <button onclick="showSection('game')">Next ✨</button>
     </div>
-
-    <br>
-    <button onclick="goTo('home')">⬅ Back</button>
   </div>
+</section>
 
-  <script>
-    function goTo(pageId) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById(pageId).classList.add('active');
-    }
-  </script>
+<!-- GAME -->
+<section id="game" class="hidden">
+  <h1>Valentine Memory Match</h1>
+  <p>Just a little fun 💗</p>
+  <div class="grid">
+    <div class="tile">💖</div><div class="tile">💖</div>
+    <div class="tile">🌸</div><div class="tile">🌸</div>
+    <div class="tile">💌</div><div class="tile">💌</div>
+    <div class="tile">❤️</div><div class="tile">❤️</div>
+  </div>
+  <div style="text-align:center">
+    <button onclick="showSection('music')">Next 🎵</button>
+  </div>
+</section>
+
+<!-- MUSIC -->
+<section id="music" class="hidden">
+  <h1>Songs That Feel Like Valentine’s Day 🎶</h1>
+  <div class="card">
+    <p>Press play when you feel like it</p>
+    <audio controls style="width:100%">
+      <source src="song.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+  <div style="text-align:center">
+    <button onclick="showSection('photos')">Next 🖼️</button>
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos" class="hidden">
+  <h1>Some Random Thoughts</h1>
+  <div class="card gallery">
+    <img src="pic1.jpg">
+    <img src="pic2.jpg">
+    <img src="pic3.jpg">
+    <img src="pic4.jpg">
+  </div>
+  <div style="text-align:center">
+    <button onclick="showSection('final')">Final 💗</button>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section id="final" class="hidden">
+  <div class="card">
+    <h2>One Last Thought</h2>
+    <p>
+      This wasn’t about perfection.  
+      Just honesty.  
+      I’m glad this moment exists.
+    </p>
+    <p>— Always 🤍</p>
+  </div>
+</section>
+
+<script>
+setTimeout(()=>{
+  document.getElementById('loader').style.display='none';
+  document.getElementById('intro').classList.remove('hidden');
+},3000);
+
+function openLetter(){
+  showSection('letter');
+}
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+</script>
 
 </body>
 </html>
