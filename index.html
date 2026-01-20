@@ -10,37 +10,38 @@
 
 <style>
 *{box-sizing:border-box}
+
+/* === BACKGROUND ANIMATION === */
 body{
   margin:0;
-  background:#fff0f5;
+  background: radial-gradient(circle at top, #fff7fb, #ffe4ec, #fff0f5);
   font-family:Arial, sans-serif;
   text-align:center;
-  /* === ANIMATED BACKGROUND === */
-body{
-  background: radial-gradient(circle at top, #fff7fb, #ffe4ec, #fff0f5);
-  overflow-x: hidden;
+  overflow-x:hidden;
 }
 
 /* Floating petals */
 .petal{
-  position: fixed;
-  top: -12%;
-  width: 14px;
-  height: 14px;
-  background: rgba(255,182,193,0.7);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: fall linear infinite;
+  position:fixed;
+  top:-12%;
+  width:14px;
+  height:14px;
+  background:rgba(255,182,193,0.7);
+  border-radius:50%;
+  pointer-events:none;
+  animation:fall linear infinite;
 }
 
 @keyframes fall{
-  0%{
-    transform: translateY(-10vh) translateX(0) rotate(0deg);
+  from{
+    transform:translateY(-10vh) translateX(0) rotate(0deg);
   }
-  100%{
-    transform: translateY(120vh) translateX(60px) rotate(360deg);
+  to{
+    transform:translateY(120vh) translateX(60px) rotate(360deg);
   }
 }
+
+/* COMMON */
 section{
   display:none;
   min-height:100vh;
@@ -155,7 +156,6 @@ button:disabled{
   font-family:'Dancing Script',cursive;
   font-size:22px;
   color:#ff3d6e;
-  letter-spacing:1px;
 }
 
 /* LETTER */
@@ -207,11 +207,9 @@ button:disabled{
 
   <div class="player">
     <div class="song-title">Lag Jaa Gale</div>
-
     <audio id="song">
       <source src="song.mp3" type="audio/mpeg">
     </audio>
-
     <button id="musicBtn" onclick="toggleSong()">▶ Play</button>
   </div>
 
@@ -230,13 +228,28 @@ button:disabled{
     <h3>Hey NODI 💗</h3>
     <p>
       I wanted to do something special today, simply because you matter to me.
-      Valentine’s Day isn’t about grand gestures, it’s about choosing someone,
-      even in the quiet moments.  
       No pressure, no expectations — just something genuine from the heart.
     </p>
     <p style="text-align:right;color:#ff5c8a;">Always ❤️</p>
   </div>
 </section>
+
+<!-- PETALS GENERATOR -->
+<script>
+(function(){
+  const COUNT = 20;
+  for(let i=0;i<COUNT;i++){
+    const p = document.createElement("div");
+    p.className = "petal";
+    p.style.left = Math.random()*100 + "vw";
+    p.style.animationDuration = (6 + Math.random()*6) + "s";
+    p.style.animationDelay = (Math.random()*5) + "s";
+    p.style.opacity = 0.4 + Math.random()*0.6;
+    p.style.transform = `scale(${0.6 + Math.random()})`;
+    document.body.appendChild(p);
+  }
+})();
+</script>
 
 <script>
 /* NAV */
@@ -284,7 +297,6 @@ emojis.sort(()=>Math.random()-0.5).forEach(e=>{
 /* MUSIC */
 const song=document.getElementById("song");
 const btn=document.getElementById("musicBtn");
-
 function toggleSong(){
   if(song.paused){
     song.play();
