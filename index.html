@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Valentine For NODI 💗</title>
 
 <!-- Fonts -->
@@ -15,15 +15,14 @@ body{
   background:#fff0f5;
   font-family:Arial, sans-serif;
   text-align:center;
-  overflow-x:hidden;
 }
 section{
   display:none;
   min-height:100vh;
+  padding:40px 20px;
   justify-content:center;
   align-items:center;
   flex-direction:column;
-  padding:40px 20px;
 }
 section.active{display:flex}
 
@@ -36,32 +35,32 @@ h1{
 }
 .subtitle{
   font-size:14px;
-  color:#999;
-  margin-bottom:25px;
+  color:#888;
+  margin-bottom:20px;
 }
 
 /* BUTTON */
 button{
-  padding:12px 28px;
+  padding:12px 26px;
   border:none;
   border-radius:25px;
   background:#ff5c8a;
   color:white;
   font-size:16px;
   cursor:pointer;
-  margin-top:20px;
+  margin:8px;
 }
 button:disabled{
   background:#ffc0d4;
   cursor:not-allowed;
 }
 
-/* START PAGE */
+/* START */
 .start-card{
   background:white;
   padding:40px;
   border-radius:20px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.1);
+  box-shadow:0 15px 40px rgba(0,0,0,.12);
 }
 
 /* GAME */
@@ -69,18 +68,18 @@ button:disabled{
   display:grid;
   grid-template-columns:repeat(4,70px);
   gap:12px;
+  margin:25px 0;
 }
 .card{
   width:70px;
   height:70px;
   background:#ffb6c1;
   border-radius:12px;
-  font-size:26px;
+  font-size:28px;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  color:white;
 }
 .card.done{
   background:#ff5c8a;
@@ -88,41 +87,26 @@ button:disabled{
 }
 
 /* MUSIC */
-.cassette{
-  width:300px;
+.player{
   background:#ffe4ec;
-  border-radius:18px;
-  padding:20px;
+  padding:25px;
+  border-radius:20px;
+  width:280px;
   box-shadow:0 10px 25px rgba(0,0,0,.15);
 }
 .song-title{
   font-family:'Playfair Display',serif;
   color:#ff5c8a;
-  margin-bottom:10px;
+  margin-bottom:15px;
 }
 
-/* ENVELOPE */
+/* LETTER */
 .envelope{
   width:260px;
   height:170px;
   background:#ffc0d4;
   border-radius:12px;
-  position:relative;
   cursor:pointer;
-  transition:.6s;
-}
-.envelope:before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:#ff9fc1;
-  clip-path:polygon(0 0,100% 0,50% 55%);
-}
-.envelope.open{
-  transform:scale(0);
 }
 .letter{
   display:none;
@@ -148,36 +132,42 @@ button:disabled{
 
 <body>
 
-<!-- 1 START -->
-<section class="active" id="s1">
+<!-- PAGE 1 -->
+<section class="active" id="p1">
   <div class="start-card">
-    <h1>A Valentine Note 💌</h1>
-    <p class="subtitle">Just because today feels right</p>
+    <h1>Will You Be My Valentine 💖</h1>
+    <p class="subtitle">I made something special for you</p>
     <button onclick="go(2)">Open 💗</button>
   </div>
 </section>
 
-<!-- 2 GAME -->
-<section id="s2">
+<!-- PAGE 2 GAME -->
+<section id="p2">
   <h1>Valentine Memory Match 💞</h1>
-  <p class="subtitle">Complete the game to continue</p>
+  <p class="subtitle">Match all pairs to continue</p>
   <div class="grid" id="grid"></div>
-  <button id="gameNext" disabled onclick="go(3)">Next 🎵</button>
+  <button id="gameNext" disabled onclick="go(3)">Next 🎶</button>
 </section>
 
-<!-- 3 MUSIC -->
-<section id="s3">
-  <h1>Songs That Feel Like Valentine’s Day 🎶</h1>
-  <div class="cassette">
+<!-- PAGE 3 MUSIC -->
+<section id="p3">
+  <h1>Songs That Feel Like Valentine’s Day 🎵</h1>
+
+  <div class="player">
     <div class="song-title">Lag Jaa Gale</div>
-    <audio id="song" src="song.mp3"></audio>
-    <button onclick="playSong()">Play Song ▶</button>
+
+    <audio id="song">
+      <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="musicBtn" onclick="toggleSong()">▶ Play</button>
   </div>
+
   <button onclick="go(4)">Next 💖</button>
 </section>
 
-<!-- 4 LETTER -->
-<section id="s4">
+<!-- PAGE 4 LETTER -->
+<section id="p4">
   <h1>A Valentine Note 💌</h1>
   <div class="envelope" onclick="openLetter()"></div>
 
@@ -185,67 +175,72 @@ button:disabled{
     <h3>Hey NODI 💗</h3>
     <p>
       I wanted to do something special today, simply because you matter to me.
-      Valentine’s Day isn’t about grand gestures—it’s about choosing someone,
-      even in quiet moments.  
-      <br><br>
-      Being around you feels calm, real, and warm. No pressure, no expectations—
-      just something genuine, from the heart.
+      No pressure, no expectations—just something genuine from the heart.
     </p>
     <p style="text-align:right;color:#ff5c8a;">Always ❤️</p>
   </div>
 </section>
 
 <script>
+/* NAV */
 function go(n){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("p"+n).classList.add("active");
 }
 
-/* GAME LOGIC */
-const emojis=['💗','🌸','💗','🌸','💖','✨','💖','✨'];
+/* GAME */
+const emojis=["💗","🌸","💗","🌸","💖","✨","💖","✨"];
 let first=null,lock=false,done=0;
-const grid=document.getElementById('grid');
+const grid=document.getElementById("grid");
 
-emojis.sort(()=>0.5-Math.random()).forEach(e=>{
-  const c=document.createElement('div');
-  c.className='card';
-  c.innerHTML='?';
+emojis.sort(()=>Math.random()-0.5).forEach(e=>{
+  const c=document.createElement("div");
+  c.className="card";
+  c.textContent="❓";
   c.onclick=()=>{
-    if(lock||c.classList.contains('done'))return;
-    c.innerHTML=e;
+    if(lock||c.classList.contains("done")||c.textContent!=="❓")return;
+    c.textContent=e;
     if(!first){first=c;}
     else{
       lock=true;
-      if(first.innerHTML===e){
-        first.classList.add('done');
-        c.classList.add('done');
+      if(first.textContent===c.textContent){
+        first.classList.add("done");
+        c.classList.add("done");
         done+=2;
         if(done===emojis.length)
-          document.getElementById('gameNext').disabled=false;
+          document.getElementById("gameNext").disabled=false;
         lock=false;
+        first=null;
       }else{
         setTimeout(()=>{
-          first.innerHTML='?';
-          c.innerHTML='?';
+          first.textContent="❓";
+          c.textContent="❓";
+          first=null;
           lock=false;
         },700);
       }
-      first=null;
     }
   };
   grid.appendChild(c);
 });
 
 /* MUSIC */
-function playSong(){
-  const s=document.getElementById('song');
-  s.paused?s.play():s.pause();
+const song=document.getElementById("song");
+const btn=document.getElementById("musicBtn");
+
+function toggleSong(){
+  if(song.paused){
+    song.play();
+    btn.textContent="⏸ Pause";
+  }else{
+    song.pause();
+    btn.textContent="▶ Play";
+  }
 }
 
 /* LETTER */
 function openLetter(){
-  document.querySelector('.envelope').classList.add('open');
-  setTimeout(()=>document.getElementById('letter').style.display='block',600);
+  document.getElementById("letter").style.display="block";
 }
 </script>
 
