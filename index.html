@@ -11,12 +11,20 @@
 <style>
 *{box-sizing:border-box}
 
-/* === BACKGROUND ANIMATION === */
+/* ===== BACKGROUND (IMAGE + OVERLAY + ANIMATION BASE) ===== */
 body{
   margin:0;
-  background: radial-gradient(circle at top, #fff7fb, #ffe4ec, #fff0f5);
+  min-height:100vh;
   font-family:Arial, sans-serif;
   text-align:center;
+
+  background:
+    linear-gradient(rgba(255,240,245,0.75), rgba(255,240,245,0.75)),
+    url("bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+
   overflow-x:hidden;
 }
 
@@ -31,17 +39,12 @@ body{
   pointer-events:none;
   animation:fall linear infinite;
 }
-
 @keyframes fall{
-  from{
-    transform:translateY(-10vh) translateX(0) rotate(0deg);
-  }
-  to{
-    transform:translateY(120vh) translateX(60px) rotate(360deg);
-  }
+  from{transform:translateY(-10vh) translateX(0) rotate(0deg)}
+  to{transform:translateY(120vh) translateX(60px) rotate(360deg)}
 }
 
-/* COMMON */
+/* ===== COMMON ===== */
 section{
   display:none;
   min-height:100vh;
@@ -141,17 +144,13 @@ button:disabled{
 .envelope::before{
   content:"";
   position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
+  top:0;left:0;width:100%;height:100%;
   background:#ff9fbc;
   clip-path:polygon(0 0,100% 0,50% 55%);
 }
 .envelope span{
   position:absolute;
-  bottom:18px;
-  left:50%;
+  bottom:18px;left:50%;
   transform:translateX(-50%);
   font-family:'Dancing Script',cursive;
   font-size:22px;
@@ -204,7 +203,6 @@ button:disabled{
 <!-- PAGE 3 MUSIC -->
 <section id="p3">
   <h1>Songs That Feel Like Valentine’s Day 🎵</h1>
-
   <div class="player">
     <div class="song-title">Lag Jaa Gale</div>
     <audio id="song">
@@ -212,18 +210,15 @@ button:disabled{
     </audio>
     <button id="musicBtn" onclick="toggleSong()">▶ Play</button>
   </div>
-
   <button onclick="go(4)">Next 💖</button>
 </section>
 
 <!-- PAGE 4 LETTER -->
 <section id="p4">
   <h1>A Valentine Note 💌</h1>
-
   <div class="envelope" onclick="openLetter()">
     <span>READ ME 💗</span>
   </div>
-
   <div class="letter" id="letter">
     <h3>Hey NODI 💗</h3>
     <p>
@@ -239,13 +234,13 @@ button:disabled{
 (function(){
   const COUNT = 20;
   for(let i=0;i<COUNT;i++){
-    const p = document.createElement("div");
-    p.className = "petal";
-    p.style.left = Math.random()*100 + "vw";
-    p.style.animationDuration = (6 + Math.random()*6) + "s";
-    p.style.animationDelay = (Math.random()*5) + "s";
-    p.style.opacity = 0.4 + Math.random()*0.6;
-    p.style.transform = `scale(${0.6 + Math.random()})`;
+    const p=document.createElement("div");
+    p.className="petal";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(6+Math.random()*6)+"s";
+    p.style.animationDelay=(Math.random()*5)+"s";
+    p.style.opacity=0.4+Math.random()*0.6;
+    p.style.transform=`scale(${0.6+Math.random()})`;
     document.body.appendChild(p);
   }
 })();
@@ -262,7 +257,6 @@ function go(n){
 const emojis=["💗","🌸","💗","🌸","💖","✨","💖","✨"];
 let first=null,lock=false,done=0;
 const grid=document.getElementById("grid");
-
 emojis.sort(()=>Math.random()-0.5).forEach(e=>{
   const c=document.createElement("div");
   c.className="card";
@@ -274,20 +268,12 @@ emojis.sort(()=>Math.random()-0.5).forEach(e=>{
     else{
       lock=true;
       if(first.textContent===c.textContent){
-        first.classList.add("done");
-        c.classList.add("done");
+        first.classList.add("done"); c.classList.add("done");
         done+=2;
-        if(done===emojis.length)
-          document.getElementById("gameNext").disabled=false;
-        lock=false;
-        first=null;
+        if(done===emojis.length) document.getElementById("gameNext").disabled=false;
+        lock=false; first=null;
       }else{
-        setTimeout(()=>{
-          first.textContent="❓";
-          c.textContent="❓";
-          first=null;
-          lock=false;
-        },700);
+        setTimeout(()=>{ first.textContent="❓"; c.textContent="❓"; first=null; lock=false; },700);
       }
     }
   };
@@ -298,13 +284,8 @@ emojis.sort(()=>Math.random()-0.5).forEach(e=>{
 const song=document.getElementById("song");
 const btn=document.getElementById("musicBtn");
 function toggleSong(){
-  if(song.paused){
-    song.play();
-    btn.textContent="⏸ Pause";
-  }else{
-    song.pause();
-    btn.textContent="▶ Play";
-  }
+  if(song.paused){ song.play(); btn.textContent="⏸ Pause"; }
+  else{ song.pause(); btn.textContent="▶ Play"; }
 }
 
 /* LETTER */
