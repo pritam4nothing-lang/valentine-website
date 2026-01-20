@@ -22,10 +22,12 @@ section{
   padding:20px;
 }
 
-.active{display:flex;}
+section.active{
+  display:flex;
+}
 
 button{
-  padding:12px 25px;
+  padding:12px 26px;
   border:none;
   border-radius:25px;
   background:#ff5f8f;
@@ -38,7 +40,8 @@ button{
 .grid{
   display:grid;
   grid-template-columns:repeat(4,70px);
-  gap:10px;
+  gap:12px;
+  margin-top:20px;
 }
 
 .card{
@@ -54,7 +57,7 @@ button{
 }
 
 img{
-  width:150px;
+  width:160px;
   border-radius:15px;
   margin:10px;
 }
@@ -66,12 +69,14 @@ img{
 <!-- PAGE 1 -->
 <section class="active">
   <h1>A Valentine Note 💌</h1>
+  <p>Just because today feels right</p>
   <button onclick="next()">Open 💖</button>
 </section>
 
 <!-- PAGE 2 GAME -->
 <section>
   <h1>Valentine Memory Match 💞</h1>
+  <p>Match the pairs</p>
   <div class="grid" id="grid"></div>
   <button onclick="next()">Next 🎵</button>
 </section>
@@ -79,19 +84,26 @@ img{
 <!-- PAGE 3 MUSIC -->
 <section>
   <h1>Songs That Feel Like Valentine’s Day 🎶</h1>
-  <audio controls>
+
+  <button onclick="playSong()">▶ Play Song</button>
+
+  <audio id="song">
     <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support audio
   </audio>
+
   <button onclick="next()">Next 💕</button>
 </section>
 
 <!-- PAGE 4 PHOTOS -->
 <section>
   <h1>Some Random Thoughts 💖</h1>
-  <img src="pic1.jpg">
-  <img src="pic2.jpg">
-  <img src="pic3.jpg">
-  <img src="pic4.jpg">
+
+  <img src="./pic1.jpg" loading="eager">
+  <img src="./pic2.jpg" loading="eager">
+  <img src="./pic3.jpg" loading="eager">
+  <img src="./pic4.jpg" loading="eager">
+
   <button onclick="next()">Final ❤️</button>
 </section>
 
@@ -102,52 +114,59 @@ img{
 </section>
 
 <script>
-let page=0;
-const sections=document.querySelectorAll("section");
+/* PAGE NAVIGATION */
+let page = 0;
+const sections = document.querySelectorAll("section");
 
 function next(){
   sections[page].classList.remove("active");
   page++;
-  if(page<sections.length){
+  if(page < sections.length){
     sections[page].classList.add("active");
   }
 }
 
-/* GAME LOGIC */
-const emojis=["💖","💖","💌","💌","🌸","🌸","❤️","❤️"];
-emojis.sort(()=>Math.random()-0.5);
+/* AUDIO */
+function playSong(){
+  const audio = document.getElementById("song");
+  audio.play();
+}
 
-const grid=document.getElementById("grid");
-let first=null;
-let lock=false;
+/* GAME */
+const emojis = ["💖","💖","💌","💌","🌸","🌸","❤️","❤️"];
+emojis.sort(() => Math.random() - 0.5);
 
-emojis.forEach(emoji=>{
-  const card=document.createElement("div");
-  card.className="card";
-  card.textContent="❔";
+const grid = document.getElementById("grid");
+let firstCard = null;
+let lock = false;
 
-  card.onclick=()=>{
-    if(lock || card.textContent!=="❔") return;
+emojis.forEach(emoji => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.textContent = "❔";
 
-    card.textContent=emoji;
+  card.addEventListener("click", () => {
+    if(lock || card.textContent !== "❔") return;
 
-    if(!first){
-      first=card;
-    }else{
-      lock=true;
-      if(first.textContent!==card.textContent){
-        setTimeout(()=>{
-          first.textContent="❔";
-          card.textContent="❔";
-          first=null;
-          lock=false;
-        },700);
-      }else{
-        first=null;
-        lock=false;
+    card.textContent = emoji;
+
+    if(!firstCard){
+      firstCard = card;
+    } else {
+      lock = true;
+      if(firstCard.textContent !== card.textContent){
+        setTimeout(() => {
+          firstCard.textContent = "❔";
+          card.textContent = "❔";
+          firstCard = null;
+          lock = false;
+        }, 700);
+      } else {
+        firstCard = null;
+        lock = false;
       }
     }
-  };
+  });
 
   grid.appendChild(card);
 });
