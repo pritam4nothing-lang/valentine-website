@@ -5,21 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>A Valentine For NODI 💗</title>
 
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Dancing+Script:wght@400;500&display=swap" rel="stylesheet">
 
 <style>
 *{box-sizing:border-box}
+
+/* ===== BACKGROUND ===== */
 body{
   margin:0;
+  min-height:100vh;
   font-family:Arial, sans-serif;
-  background:
-    linear-gradient(rgba(255,240,245,.92),rgba(255,240,245,.92)),
-    url("bg.jpg"); /* ← background image */
-  background-size:cover;
-  background-attachment:fixed;
   text-align:center;
+  background:
+    linear-gradient(rgba(255,240,245,0.75), rgba(255,240,245,0.75)),
+    url("bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  overflow-x:hidden;
 }
+
+/* Floating petals */
+.petal{
+  position:fixed;
+  top:-12%;
+  width:14px;
+  height:14px;
+  background:rgba(255,182,193,0.7);
+  border-radius:50%;
+  pointer-events:none;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  from{transform:translateY(-10vh) rotate(0deg)}
+  to{transform:translateY(120vh) rotate(360deg)}
+}
+
+/* ===== PAGE TRANSITION ===== */
 section{
   display:none;
   min-height:100vh;
@@ -27,14 +49,19 @@ section{
   justify-content:center;
   align-items:center;
   flex-direction:column;
+  animation:fadeIn .7s ease;
 }
 section.active{display:flex}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(12px)}
+  to{opacity:1; transform:translateY(0)}
+}
 
-/* HEADINGS */
+/* ===== TEXT ===== */
 h1{
   font-family:'Playfair Display',serif;
   color:#ff5c8a;
-  font-size:36px;
+  font-size:38px;
 }
 .subtitle{
   font-size:14px;
@@ -42,7 +69,7 @@ h1{
   margin-bottom:20px;
 }
 
-/* BUTTON */
+/* ===== BUTTONS ===== */
 button{
   padding:12px 26px;
   border:none;
@@ -51,20 +78,29 @@ button{
   color:white;
   font-size:16px;
   cursor:pointer;
-  margin:10px;
+  margin:8px;
+  transition:.3s;
 }
-button:disabled{
-  background:#ffc0d4;
-  cursor:not-allowed;
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(255,92,138,.4);
+}
+button:active{transform:scale(.95)}
+button:disabled{background:#ffc0d4}
+
+/* ===== GLASS CARDS ===== */
+.start-card,
+.music-card,
+.letter,
+.matter-card{
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(12px);
+  border-radius:20px;
+  box-shadow:0 15px 40px rgba(0,0,0,.15);
 }
 
 /* START */
-.start-card{
-  background:white;
-  padding:40px;
-  border-radius:22px;
-  box-shadow:0 20px 40px rgba(0,0,0,.15);
-}
+.start-card{padding:40px}
 
 /* GAME */
 .grid{
@@ -74,109 +110,141 @@ button:disabled{
   margin:25px 0;
 }
 .card{
-  width:70px;height:70px;
+  width:70px;
+  height:70px;
   background:#ffb6c1;
-  border-radius:14px;
+  border-radius:12px;
   font-size:28px;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
 }
-.card.done{
-  background:#ff5c8a;
-}
+.card.done{background:#ff5c8a}
 
-/* MUSIC */
-.player{
-  background:#ffe4ec;
-  padding:25px;
-  border-radius:22px;
+/* ===== MUSIC PLAYER ===== */
+.music-card{
+  padding:30px;
   width:280px;
-  box-shadow:0 15px 30px rgba(0,0,0,.18);
 }
-.song-title{
+.cover{
+  width:180px;
+  height:180px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  overflow:hidden;
+  box-shadow:0 0 0 6px #ffd6e5;
+}
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.cover.playing{
+  animation:spin 6s linear infinite;
+  box-shadow:0 0 25px rgba(255,92,138,.6);
+}
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+.song-name{
   font-family:'Playfair Display',serif;
   color:#ff5c8a;
   margin-bottom:15px;
 }
 
-/* PHOTO SWIPE */
+/* ===== PHOTO SLIDER ===== */
 .slider{
   width:260px;
+  height:340px;
+  position:relative;
   overflow:hidden;
-}
-.slides{
-  display:flex;
-  transition:.5s;
-}
-.slides img{
-  width:260px;
   border-radius:20px;
-  margin-right:10px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+.slide{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0;
+  transform:translateX(40px);
+  transition:.6s ease;
+}
+.slide.active{
+  opacity:1;
+  transform:translateX(0);
 }
 
-/* WHY YOU MATTER */
-.why-wrap{
-  max-width:600px;
-  margin:30px auto;
+/* ===== WHY YOU MATTER ===== */
+.matter-wrap{
+  max-width:420px;
   display:flex;
   flex-direction:column;
   gap:18px;
 }
-.why-card{
-  background:#ffe4ec;
-  border-radius:18px;
+.matter-card{
   padding:22px;
-  box-shadow:0 10px 25px rgba(0,0,0,.12);
-  transition:.3s;
+  transition:.35s;
 }
-.why-card:hover{
-  transform:scale(1.03);
+.matter-card:hover{
+  transform:translateY(-6px) scale(1.02);
 }
-.why-card h3{
+.matter-card h3{
   font-family:'Playfair Display',serif;
   color:#ff5c8a;
+  margin-bottom:6px;
 }
-.why-card p{
+.matter-card p{
   font-size:14px;
   color:#555;
 }
 
 /* ENVELOPE */
 .envelope{
-  width:260px;height:170px;
+  width:260px;
+  height:170px;
   background:#ffc0d4;
-  border-radius:12px;
+  border-radius:14px;
   position:relative;
   cursor:pointer;
+  box-shadow:0 15px 35px rgba(0,0,0,.18);
+  overflow:hidden;
 }
-.envelope:before{
+.envelope::before{
   content:"";
   position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  clip-path:polygon(0 0,50% 50%,100% 0);
-  background:#ff9eb8;
+  inset:0;
+  background:#ff9fbc;
+  clip-path:polygon(0 0,100% 0,50% 55%);
 }
-.readme{
+.envelope span{
   position:absolute;
-  bottom:12px;
-  width:100%;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
   font-family:'Dancing Script',cursive;
-  color:#fff;
   font-size:22px;
+  color:#ff3d6e;
 }
+
+/* LETTER */
 .letter{
   display:none;
-  background:white;
   max-width:520px;
   padding:30px;
-  border-radius:20px;
-  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  margin-top:25px;
+}
+.letter h3{
+  font-family:'Playfair Display',serif;
+  color:#ff5c8a;
 }
 .letter p{
   font-family:'Dancing Script',cursive;
   font-size:18px;
+  line-height:1.7;
   color:#333;
   text-align:left;
 }
@@ -205,43 +273,42 @@ button:disabled{
 <!-- PAGE 3 MUSIC -->
 <section id="p3">
   <h1>Songs That Feel Like Valentine’s Day 🎵</h1>
-  <div class="player">
-    <div class="song-title">Lag Jaa Gale</div>
+  <div class="music-card">
+    <div class="cover" id="cover">
+      <img src="music-cover.jpg">
+    </div>
+    <div class="song-name">Lag Jaa Gale</div>
     <audio id="song">
       <source src="song.mp3" type="audio/mpeg">
     </audio>
-    <button onclick="toggleSong()" id="musicBtn">▶ Play</button>
+    <button id="musicBtn" onclick="toggleSong()">▶ Play</button>
   </div>
-  <button onclick="go(4)">Next 📸</button>
+  <button onclick="go(4)">Next 💖</button>
 </section>
 
 <!-- PAGE 4 PHOTOS -->
 <section id="p4">
-  <h1>Our Moments 📷</h1>
+  <h1>Some Random Thoughts 💗</h1>
   <div class="slider">
-    <div class="slides" id="slides">
-      <img src="pic1.jpg">
-      <img src="pic2.jpg">
-      <img src="pic3.jpg">
-      <img src="pic4.jpg">
-    </div>
+    <img src="pic1.jpg" class="slide active">
+    <img src="pic2.jpg" class="slide">
+    <img src="pic3.jpg" class="slide">
+    <img src="pic4.jpg" class="slide">
   </div>
-  <button onclick="nextPic()">Swipe ➡️</button>
-  <button onclick="go(5)">Next 💖</button>
+  <button onclick="nextSlide()">Swipe ➡</button>
+  <button onclick="go(5)">Next ✨</button>
 </section>
 
 <!-- PAGE 5 WHY YOU MATTER -->
 <section id="p5">
   <h1>Why You Matter 💗</h1>
-  <p class="subtitle">A glimpse into what makes you extraordinary</p>
-
-  <div class="why-wrap">
-    <div class="why-card"><h3>Genuine Heart</h3><p>You care in ways that feel real</p></div>
-    <div class="why-card"><h3>Calm Presence</h3><p>Being with you feels peaceful</p></div>
-    <div class="why-card"><h3>Kind Nature</h3><p>Your kindness shows naturally</p></div>
-    <div class="why-card"><h3>Soft Strength</h3><p>Gentle and emotionally steady</p></div>
+  <p class="subtitle">Especially today</p>
+  <div class="matter-wrap">
+    <div class="matter-card"><h3>Genuine Heart 💞</h3><p>You care in ways that feel real.</p></div>
+    <div class="matter-card"><h3>Calm Presence 🌸</h3><p>Being with you feels peaceful.</p></div>
+    <div class="matter-card"><h3>Kind Nature ✨</h3><p>Your kindness is effortless.</p></div>
+    <div class="matter-card"><h3>Just You 🌙</h3><p>Quietly special, always.</p></div>
   </div>
-
   <button onclick="go(6)">Next 💌</button>
 </section>
 
@@ -249,20 +316,28 @@ button:disabled{
 <section id="p6">
   <h1>A Valentine Note 💌</h1>
   <div class="envelope" onclick="openLetter()">
-    <div class="readme">READ ME</div>
+    <span>READ ME 💗</span>
   </div>
-
   <div class="letter" id="letter">
     <h3>Hey NODI 💗</h3>
     <p>
       I wanted to do something special today, simply because you matter to me.
-      No pressure. No expectations. Just something genuine, from the heart.
+      No pressure, no expectations — just something genuine from the heart.
     </p>
-    <p style="text-align:right;color:#ff5c8a;">Always ❤️</p>
   </div>
 </section>
 
 <script>
+/* PETALS */
+for(let i=0;i<20;i++){
+  const p=document.createElement("div");
+  p.className="petal";
+  p.style.left=Math.random()*100+"vw";
+  p.style.animationDuration=(6+Math.random()*6)+"s";
+  document.body.appendChild(p);
+}
+
+/* NAV */
 function go(n){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   document.getElementById("p"+n).classList.add("active");
@@ -274,8 +349,7 @@ let first=null,lock=false,done=0;
 const grid=document.getElementById("grid");
 emojis.sort(()=>Math.random()-0.5).forEach(e=>{
   const c=document.createElement("div");
-  c.className="card";
-  c.textContent="❓";
+  c.className="card"; c.textContent="❓";
   c.onclick=()=>{
     if(lock||c.classList.contains("done")||c.textContent!=="❓")return;
     c.textContent=e;
@@ -283,18 +357,12 @@ emojis.sort(()=>Math.random()-0.5).forEach(e=>{
     else{
       lock=true;
       if(first.textContent===c.textContent){
-        first.classList.add("done");
-        c.classList.add("done");
+        first.classList.add("done"); c.classList.add("done");
         done+=2;
-        if(done===emojis.length)
-          document.getElementById("gameNext").disabled=false;
-        lock=false;first=null;
+        if(done===emojis.length) gameNext.disabled=false;
+        lock=false; first=null;
       }else{
-        setTimeout(()=>{
-          first.textContent="❓";
-          c.textContent="❓";
-          first=null;lock=false;
-        },700);
+        setTimeout(()=>{first.textContent="❓";c.textContent="❓";first=null;lock=false;},700);
       }
     }
   };
@@ -302,18 +370,24 @@ emojis.sort(()=>Math.random()-0.5).forEach(e=>{
 });
 
 /* MUSIC */
-const song=document.getElementById("song");
-const btn=document.getElementById("musicBtn");
 function toggleSong(){
-  if(song.paused){song.play();btn.textContent="⏸ Pause";}
-  else{song.pause();btn.textContent="▶ Play";}
+  const song=document.getElementById("song");
+  const btn=document.getElementById("musicBtn");
+  const cover=document.getElementById("cover");
+  if(song.paused){
+    song.play(); btn.textContent="⏸ Pause"; cover.classList.add("playing");
+  }else{
+    song.pause(); btn.textContent="▶ Play"; cover.classList.remove("playing");
+  }
 }
 
-/* PHOTO SWIPE */
-let index=0;
-function nextPic(){
-  index=(index+1)%4;
-  document.getElementById("slides").style.transform=`translateX(-${index*270}px)`;
+/* SLIDER */
+let currentSlide=0;
+const slides=document.querySelectorAll(".slide");
+function nextSlide(){
+  slides[currentSlide].classList.remove("active");
+  currentSlide=(currentSlide+1)%slides.length;
+  slides[currentSlide].classList.add("active");
 }
 
 /* LETTER */
