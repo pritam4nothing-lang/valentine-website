@@ -15,6 +15,31 @@ body{
   background:#fff0f5;
   font-family:Arial, sans-serif;
   text-align:center;
+  /* === ANIMATED BACKGROUND === */
+body{
+  background: radial-gradient(circle at top, #fff7fb, #ffe4ec, #fff0f5);
+  overflow-x: hidden;
+}
+
+/* Floating petals */
+.petal{
+  position: fixed;
+  top: -12%;
+  width: 14px;
+  height: 14px;
+  background: rgba(255,182,193,0.7);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+@keyframes fall{
+  0%{
+    transform: translateY(-10vh) translateX(0) rotate(0deg);
+  }
+  100%{
+    transform: translateY(120vh) translateX(60px) rotate(360deg);
+  }
 }
 section{
   display:none;
