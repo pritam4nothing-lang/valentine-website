@@ -376,6 +376,20 @@ button:disabled{background:#ffc0d4}
   <div class="grid" id="grid"></div>
   <button id="gameNext" disabled onclick="go(3)">Next 🎶</button>
 </section>
+  
+<!-- PAGE SONG CHOICE -->
+<section id="pSongChoice">
+  <h1>Play the Song 💗</h1>
+  <p class="subtitle">Choose how you feel</p>
+
+  <button onclick="chooseSong('hug')">
+    If you want to hug me 🤗
+  </button>
+
+  <button onclick="chooseSong('kiss')">
+    If you want to kiss me 💋
+  </button>
+</section>
 
 <!-- PAGE 3 MUSIC -->
 <section id="p3">
@@ -636,7 +650,29 @@ function heartBurst(){
     setTimeout(()=>h.remove(),900);
   }
 }
-  
+let selectedSong = "hug";
+
+function chooseSong(type){
+  selectedSong = type;
+
+  const audio = document.querySelector("#song source");
+  const cover = document.querySelector("#cover img");
+  const title = document.querySelector(".song-name");
+
+  if(type === "hug"){
+    audio.src = "song.mp3";
+    cover.src = "music-cover.jpg";
+    title.textContent = "Lag Jaa Gale";
+  } else {
+    audio.src = "song2.mp3";
+    cover.src = "music-cover2.jpg";
+    title.textContent = "Second Song";
+  }
+
+  audio.parentElement.load(); // important
+  go(3);
+}
+
 </script>
 
 </body>
