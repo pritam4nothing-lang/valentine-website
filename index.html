@@ -460,23 +460,39 @@ images.sort(()=>Math.random()-0.5).forEach(img=>{
   c.className="card";
   c.dataset.img = img;
   c.textContent = "❓";
-  c.onclick=()=>{
-    if(lock||c.classList.contains("done")||c.textContent!=="❓")return;
-    c.innerHTML = `<img src="${img}" style="width:100%;height:100%;border-radius:10px;">`;
-    if(!first)first=c;
-    else{
-      lock=true;
-     if(first.dataset.img[0] === c.dataset.img[0]){
-        first.classList.add("done");c.classList.add("done");
-        done+=2;if(done===emojis.length)gameNext.disabled=false;
-        first=null;lock=false;
-      }else setTimeout(()=>{
-  first.innerHTML="❓";
-  c.innerHTML="❓";lock=false},700);
+ c.onclick = () => {
+  if (lock || c.classList.contains("done") || c.innerHTML !== "❓") return;
+
+  // show image
+  c.innerHTML = `<img src="${c.dataset.img}" style="width:100%;height:100%;border-radius:10px;">`;
+
+  if (!first) {
+    first = c;
+  } else {
+    lock = true;
+
+    // match check (a1-a2, b1-b2 etc)
+    if (first.dataset.img[0] === c.dataset.img[0]) {
+      first.classList.add("done");
+      c.classList.add("done");
+      done += 2;
+
+      if (done === images.length) {
+        gameNext.disabled = false;
+      }
+
+      first = null;
+      lock = false;
+    } else {
+      setTimeout(() => {
+        first.innerHTML = "❓";
+        c.innerHTML = "❓";
+        first = null;
+        lock = false;
+      }, 700);
     }
-  };
-  grid.appendChild(c);
-});
+  }
+};
 
 /* MUSIC */
 function toggleSong(){
