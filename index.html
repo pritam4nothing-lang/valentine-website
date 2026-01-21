@@ -365,6 +365,27 @@ function chooseSong(t){
   else{src.src="song2.mp3";img.src="music-cover2.jpg";name.textContent="Second Song"}
   src.parentElement.load();go(3)
 }
+<script>
+/* FLOATING HEARTS SAFE FIX */
+(function(){
+  const heartsContainer = document.getElementById("hearts");
+  if(!heartsContainer) return;
+
+  function createHeart(){
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.fontSize = (14 + Math.random()*16) + "px";
+    h.style.animationDuration = (6 + Math.random()*6) + "s";
+    heartsContainer.appendChild(h);
+    setTimeout(()=>h.remove(),12000);
+  }
+
+  setInterval(createHeart,350);
+})();
+</script>
+  
 </script>
 
 </body>
