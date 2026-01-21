@@ -333,6 +333,27 @@ button:disabled{background:#ffc0d4}
   border-radius:10px;
   transition:width .3s ease;
 }
+/* BOUNCE IN ANIMATION */
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.bounce-in {
+  animation: bounceIn 0.9s ease-out forwards;
+}
 
 </style>
 </head>
@@ -353,7 +374,7 @@ button:disabled{background:#ffc0d4}
 <!-- PAGE 1 -->
 <section id="p1">
   <div class="start-card">
-    <h1>Happy Valentine’s Day NODI 💖</h1>
+   <h1 class="bounce-in">Happy Valentine’s Day NODI 💖</h1>
     <p class="subtitle">I made something special for you</p>
     <button onclick="go(2)">Open 💗</button>
   </div>
