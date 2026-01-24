@@ -454,7 +454,7 @@ button:disabled{background:#ffc0d4}
 
 <!-- WHY YOU MATTER -->
 <section id="p5">
-  <h1>Why Are You So Special 💗</h1>
+  <h1 id="whyHeading">Why Are You So Special 💗</h1>
 
   <div class="matter-wrap">
 
@@ -714,7 +714,17 @@ window.addEventListener("load",()=>{
     c.onclick=()=>c.classList.add("revealed");
   });
 });
+function updateWhyHeading(){
+  const heading = document.getElementById("whyHeading");
 
+  if(!heading) return; // safety
+
+  if(selectedSet === "A"){
+    heading.textContent = "Why Are You So Special 💗";
+  }else{
+    heading.textContent = "What I Love Most About You 💗";
+  }
+}
 /* ---------------- LETTER ---------------- */
 function openLetter(){
   document.getElementById("letter").style.display="block";
