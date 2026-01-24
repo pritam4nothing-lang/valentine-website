@@ -354,7 +354,21 @@ button:disabled{background:#ffc0d4}
 .bounce-in {
   animation: bounceIn 0.9s ease-out forwards;
 }
-.p5-next{
+.next-wrap{
+  width:100%;
+  margin-top:30px;
+  text-align:center;
+}
+.next-wrap{
+  width:100%;
+  margin-top:30px;
+}
+
+.next-wrap button{
+  display:block;
+  margin:0 auto;
+}
+.next-btn-wrap{
   width:100%;
   display:flex;
   justify-content:center;
@@ -464,9 +478,12 @@ button:disabled{background:#ffc0d4}
     </div>
   </div>
     
-  <div class="p5-next">
-  <button onclick="go(6)">Next 💌</button>
+  <div class="next-btn-wrap">
+  <button onclick="go(6)" style="margin:0 auto; display:inline-block;">
+    Next 💌
+  </button>
   </div>
+</section>
 
 <!-- LETTER -->
 <section id="p6">
