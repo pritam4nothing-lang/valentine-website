@@ -3,110 +3,347 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine For NODI 💖</title>
+<title>A Valentine For NODI 💖</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Dancing+Script:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 
 body{
-  margin:0;
-  min-height:100vh;
-  font-family:Arial,sans-serif;
-  text-align:center;
+  font-family:'Playfair Display',serif;
   background:
     linear-gradient(rgba(255,240,245,.85),rgba(255,240,245,.85)),
     url("bg.jpg");
   background-size:cover;
   background-position:center;
+  min-height:100vh;
   overflow-x:hidden;
+  text-align:center;
 }
 
-/* ================= LOADER ================= */
+/* HEARTS */
+.hearts{position:fixed;inset:0;pointer-events:none;z-index:0}
+.heart{
+  position:absolute;
+  color:rgba(255,92,138,.6);
+  animation:float 8s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(-10vh);opacity:0}
+  20%{opacity:1}
+  to{transform:translateY(110vh);opacity:0}
+}
+
+/* SECTIONS */
+section{
+  display:none;
+  min-height:100vh;
+  padding:40px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+section.active{display:flex}
+
+/* LOADER */
 #loader{
   position:fixed;
   inset:0;
   background:
     linear-gradient(rgba(255,240,245,.95),rgba(255,240,245,.95)),
     url("bg.jpg");
+  background-size:cover;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   z-index:9999;
 }
-.loader-gif{width:120px;margin-bottom:20px}
+#loader p{
+  font-family:'Dancing Script',cursive;
+  font-size:22px;
+  color:#ff5c8a;
+  margin:20px 0;
+}
 .loading-bar{
   width:260px;height:12px;
-  background:#ffd6e5;
-  border-radius:10px;overflow:hidden
+  background:#ffe0ec;
+  border-radius:10px;
+  overflow:hidden;
 }
 .loading-progress{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,#ff5c8a,#ff9bb5);
-  transition:width .3s ease;
+  width:0;height:100%;
+  background:linear-gradient(90deg,#ff5c8a,#ff8fb1);
+  transition:.3s;
 }
 
-/* ================= HEARTS ================= */
-.hearts{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
+/* START CARD */
+.start-card{
+  background:rgba(255,255,255,.8);
+  padding:40px;
+  border-radius:30px;
+  box-shadow:0 25px 60px rgba(255,92,138,.25);
 }
-.heart{
-  position:absolute;
-  color:rgba(255,92,138,.6);
-  animation:floatHeart linear infinite;
-}
-@keyframes floatHeart{
-  from{transform:translateY(110vh) scale(.8);opacity:1}
-  to{transform:translateY(-10vh) scale(1.4);opacity:0}
-}
-
-/* ================= SECTIONS ================= */
-section{
-  display:none;
-  min-height:100vh;
-  padding:40px 20px;
-  justify-content:center;
-  align-items:center;
-  flex-direction:column;
-}
-section.active{display:flex}
-
-/* ================= TEXT ================= */
-h1{
-  font-family:'Playfair Display',serif;
-  color:#ff5c8a;
-}
-
-/* ================= BUTTON ================= */
+h1{color:#ff5c8a;margin-bottom:20px}
 button{
-  padding:12px 28px;
+  padding:14px 28px;
   border:none;
-  border-radius:25px;
+  border-radius:30px;
   background:#ff5c8a;
   color:white;
   font-size:16px;
   cursor:pointer;
-  margin-top:20px;
+  margin:10px;
 }
-button:disabled{background:#ffc0d4}
 
-/* ================= GAME ================= */
+/* GAME */
 .grid{
   display:grid;
   grid-template-columns:repeat(4,70px);
   gap:12px;
-  margin:25px auto;
+  margin:30px 0;
 }
 .card{
   width:70px;height:70px;
   perspective:800px;
 }
 .card-inner{
+  width:100%;height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:.6s;
+}
+.card.flip .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{
+  position:absolute;inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:12px;
+  backface-visibility:hidden;
+}
+.card-front{
+  background:#ffb6c1;
+  font-size:28px;
+  color:#ff5c8a;
+}
+.card-back{
+  transform:rotateY(180deg);
+  background:white;
+}
+.card-back img{
+  width:100%;height:100%;
+  object-fit:cover;border-radius:12px;
+}
+.card.done{
+  border:3px solid #ff5c8a;
+  box-shadow:0 0 15px rgba(255,92,138,.6);
+  border-radius:12px;
+}
+
+/* SONG */
+.music-card{
+  background:rgba(255,255,255,.85);
+  padding:30px;
+  border-radius:30px;
+  width:280px;
+}
+.cover{
+  width:180px;height:180px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  overflow:hidden;
+}
+.cover img{width:100%;height:100%;object-fit:cover}
+.cover.playing{animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* WHY YOU */
+.matter-wrap{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  max-width:420px;
+}
+.tap-card{
+  background:rgba(255,255,255,.85);
+  padding:25px;
+  border-radius:20px;
+  cursor:pointer;
+  position:relative;
+}
+.card-cover{
+  position:absolute;inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff5c8a,#ff8fb1);
+  color:white;
+  font-family:'Dancing Script',cursive;
+}
+.card-content{opacity:0;transition:.4s}
+.tap-card.revealed .card-cover{opacity:0}
+.tap-card.revealed .card-content{opacity:1}
+
+/* LETTER */
+.letter{
+  background:white;
+  padding:40px;
+  border-radius:25px;
+  max-width:640px;
+  font-family:'Dancing Script',cursive;
+  font-size:20px;
+  line-height:1.8;
+  box-shadow:0 25px 50px rgba(0,0,0,.25);
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+  <img src="loader.gif" width="120">
+  <p>Loading love for you, NODI 💖</p>
+  <div class="loading-bar"><div class="loading-progress"></div></div>
+</div>
+
+<div class="hearts" id="hearts"></div>
+
+<section id="p1" class="active">
+  <div class="start-card">
+    <h1>Happy Valentine’s Day NODI 💕</h1>
+    <button onclick="go(2)">Open 💌</button>
+  </div>
+</section>
+
+<section id="p2">
+  <h1>Valentine Memory Match 💖</h1>
+  <div class="grid" id="grid"></div>
+  <button id="nextGame" disabled onclick="go(3)">Next 🎶</button>
+</section>
+
+<section id="p3">
+  <h1>Choose a Song 🎵</h1>
+  <button onclick="chooseSong('hug')">If you want to hug me 🤗</button>
+  <button onclick="chooseSong('kiss')">If you want to kiss me 💋</button>
+</section>
+
+<section id="p4">
+  <h1>A Song That Hugs Your Heart 🎶</h1>
+  <div class="music-card">
+    <div class="cover" id="cover"><img src="music-cover.jpg"></div>
+    <audio id="song"></audio>
+    <button onclick="toggleSong()">Play ▶</button>
+  </div>
+  <button onclick="go(5)">Next 💖</button>
+</section>
+
+<section id="p5">
+  <h1>Why Are You So Special 💗</h1>
+  <div class="matter-wrap">
+    <div class="tap-card"><div class="card-cover">Tap 💝</div><div class="card-content">Your kindness 🌸</div></div>
+    <div class="tap-card"><div class="card-cover">Tap 💝</div><div class="card-content">Your calm 🌙</div></div>
+    <div class="tap-card"><div class="card-cover">Tap 💝</div><div class="card-content">Your smile 😊</div></div>
+    <div class="tap-card"><div class="card-cover">Tap 💝</div><div class="card-content">Just YOU 💕</div></div>
+  </div>
+  <button onclick="go(6)">Next 💌</button>
+</section>
+
+<section id="p6">
+  <h1>A Valentine Note 💌</h1>
+  <button onclick="document.querySelector('.letter').style.display='block'">Read Me 💖</button>
+  <div class="letter">
+    Hey NODI 💖<br><br>
+    Distance may exist, but love never fades.  
+    Thank you for choosing me every single day.<br><br>
+    — Your Pritam ❤️
+  </div>
+</section>
+
+<script>
+function go(n){
+  document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("p"+n).classList.add("active");
+}
+
+/* HEARTS */
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=14+Math.random()*20+"px";
+  document.getElementById("hearts").appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},300);
+
+/* LOADER */
+let prog=0;
+const bar=document.querySelector(".loading-progress");
+const loadInt=setInterval(()=>{
+  prog+=10;
+  bar.style.width=prog+"%";
+  if(prog>=100){
+    clearInterval(loadInt);
+    document.getElementById("loader").style.display="none";
+  }
+},200);
+
+/* GAME */
+const imgs=["a1.jpg","a2.jpg","b1.jpg","b2.jpg","c1.jpg","c2.jpg","d1.jpg","d2.jpg"];
+let first=null,lock=false,done=0;
+imgs.sort(()=>Math.random()-0.5).forEach(i=>{
+  const c=document.createElement("div");
+  c.className="card";
+  c.innerHTML=`<div class="card-inner">
+    <div class="card-front">?</div>
+    <div class="card-back"><img src="${i}"></div>
+  </div>`;
+  c.onclick=()=>{
+    if(lock||c.classList.contains("flip"))return;
+    c.classList.add("flip");
+    if(!first){first=c;}
+    else{
+      lock=true;
+      if(first.innerHTML===c.innerHTML){
+        first.classList.add("done");
+        c.classList.add("done");
+        done+=2;
+        if(done===imgs.length)document.getElementById("nextGame").disabled=false;
+        first=null;lock=false;
+      }else{
+        setTimeout(()=>{
+          first.classList.remove("flip");
+          c.classList.remove("flip");
+          first=null;lock=false;
+        },700);
+      }
+    }
+  };
+  document.getElementById("grid").appendChild(c);
+});
+
+/* SONG */
+function chooseSong(t){
+  const s=document.getElementById("song");
+  s.src=t==="hug"?"song.mp3":"song2.mp3";
+  s.play();
+  go(4);
+}
+function toggleSong(){
+  const s=document.getElementById("song");
+  s.paused?s.play():s.pause();
+}
+
+/* TAP */
+document.querySelectorAll(".tap-card").forEach(c=>c.onclick=()=>c.classList.add("revealed"));
+</script>
+
+</body>
+</html>.card-inner{
   width:100%;height:100%;
   position:relative;
   transform-style:preserve-3d;
