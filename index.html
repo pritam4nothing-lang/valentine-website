@@ -63,7 +63,78 @@ h1{
 .subtitle{
   font-size:14px;
   color:#777;
-  margin-bottom:20px;
+/* ===== GAME (FLIP VERSION – READY MADE) ===== */
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,70px);
+  gap:12px;
+  margin:25px auto;
+  justify-content:center;
+}
+
+.card{
+  width:70px;
+  height:70px;
+  perspective:800px;
+  cursor:pointer;
+  border-radius:12px;
+}
+
+.card-inner{
+  width:100%;
+  height:100%;
+  position:relative;
+  transform-style:preserve-3d;
+  transition:transform 0.6s ease;
+}
+
+.card.flip .card-inner{
+  transform:rotateY(180deg);
+}
+
+.card-front,
+.card-back{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  backface-visibility:hidden;
+  border-radius:12px;
+}
+
+.card-front{
+  background:#ffb6c1;
+  font-size:28px;
+}
+
+.card-back{
+  transform:rotateY(180deg);
+  background:#fff;
+}
+
+.card-back img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:10px;
+  pointer-events:none;
+}
+
+/* matched cards */
+.card.done{
+  border:3px solid #ff5c8a;
+  box-shadow:0 0 15px rgba(255,92,138,0.6);
+}
+
+/* mobile tap fix */
+.card,
+.tap-card{
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+  touch-action:manipulation;
+}  margin-bottom:20px;
 }
 
 /* BUTTON */
@@ -88,41 +159,7 @@ button:disabled{background:#ffc0d4}
 }
 
 /* GAME */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,70px);
-  gap:12px;
-  margin:25px 0;
-}
-.card{
-  width:70px;
-  height:70px;
-  background:#ffb6c1;
-  border-radius:12px;
-  font-size:28px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-.card,
-.tap-card {
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
 
-.card img {
-  pointer-events: none;
-  user-select: none;
-}
-.card.done{background:#ff5c8a}
-.card.done{
-  border:3px solid #ff5c8a;
-  box-shadow:0 0 15px rgba(255,92,138,0.6);
-  transform:scale(1.05);
-}
 
 /* MUSIC */
 .music-card{
@@ -560,23 +597,7 @@ const preloadFiles = [
 function go(n){
   document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
   if(n==="SongChoice")document.getElementById("pSongChoice").classList.add("active");
-  else document.getElementById("p"+n).classList.add("active");
-}
-
-/* HEARTS */
-const hc=document.getElementById("hearts");
-setInterval(()=>{
-  const h=document.createElement("div");
-  h.className="heart";
-  h.textContent="❤";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=(14+Math.random()*16)+"px";
-  h.style.animationDuration=(6+Math.random()*6)+"s";
-  hc.appendChild(h);
-  setTimeout(()=>h.remove(),12000);
-},350);
-
-/* GAME */
+  else docume/* GAME */
 const images = [
   "a1.jpg","a2.jpg",
   "b1.jpg","b2.jpg",
@@ -592,12 +613,20 @@ images.sort(() => Math.random() - 0.5).forEach(img => {
   const c = document.createElement("div");
   c.className = "card";
   c.dataset.img = img;
-  c.textContent = "❓";
+
+  c.innerHTML = `
+    <div class="card-inner">
+      <div class="card-front">?</div>
+      <div class="card-back">
+        <img src="${img}">
+      </div>
+    </div>
+  `;
 
   c.onclick = () => {
-    if (lock || c.classList.contains("done") || c.innerHTML !== "❓") return;
+    if (lock || c.classList.contains("done") || c.classList.contains("flip")) return;
 
-    c.innerHTML = `<img src="${img}" style="width:100%;height:100%;border-radius:10px;">`;
+    c.classList.add("flip");
 
     if (!first) {
       first = c;
@@ -615,17 +644,32 @@ images.sort(() => Math.random() - 0.5).forEach(img => {
         lock = false;
       } else {
         setTimeout(() => {
-          first.innerHTML = "❓";
-          c.innerHTML = "❓";
+          first.classList.remove("flip");
+          c.classList.remove("flip");
           first = null;
           lock = false;
-        }, 700);
+        }, 800);
       }
     }
   };
 
   grid.appendChild(c);
-});                    
+});nt.getElementById("p"+n).classList.add("active");
+}
+
+/* HEARTS */
+const hc=document.getElementById("hearts");
+setInterval(()=>{
+  const h=document.createElement("div");
+  h.className="heart";
+  h.textContent="❤";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(14+Math.random()*16)+"px";
+  h.style.animationDuration=(6+Math.random()*6)+"s";
+  hc.appendChild(h);
+  setTimeout(()=>h.remove(),12000);
+},350);
+
 
 /* MUSIC */
 function toggleSong(){
