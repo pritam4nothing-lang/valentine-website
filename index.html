@@ -393,6 +393,29 @@ button:disabled{background:#ffc0d4}
   z-index: 5;
   pointer-events: none;
 }
+/* HEART / KISS BURST EFFECT */
+.burst {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2; /* sticker er pichone */
+}
+
+.burst span {
+  position: absolute;
+  font-size: 18px;
+  animation: burstMove 1s ease-out forwards;
+}
+
+@keyframes burstMove {
+  from {
+    transform: translate(0,0) scale(1);
+    opacity: 1;
+  }
+  to {
+    transform: translate(var(--x), var(--y)) scale(0.3);
+    opacity: 0;
+  }
+}
 </style>
 </head>
 
@@ -565,7 +588,63 @@ button:disabled{background:#ffc0d4}
 <script>
 /* ---------------- GLOBAL DATA ---------------- */
 let selectedSet = "A";
+/* -------- STICKER SOUNDS -------- */
+const loveSound = new Audio("love_pop.mp3");
+const kissSound = new Audio("kiss_pop.mp3");
 
+loveSound.volume = 0.7;
+kissSound.volume = 0.7;
+/* -------- BURST EFFECT -------- */
+function createBurst(x, y, emoji, count = 8) {
+  const burst = document.createElement("div");
+  burst.className = "burst";
+  burst.style.left = x + "px";
+  burst.style.top = y + "px";
+
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement("span");
+    span.textContent = emoji;
+
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 40 + Math.random() * 30;
+
+    span.style.setProperty("--x", Math.cos(angle) * distance + "px");
+    span.style.setProperty("--y", Math.sin(angle) * distance + "px");
+
+    burst.appendChild(span);
+  }
+
+  document.body.appendChild(burst);
+  setTimeout(() => burst.remove(), 1000);
+}
+/* -------- STICKER TAP INTERACTION -------- */
+let lastTapTime = 0;
+
+function handleStickerTap(e) {
+  const now = Date.now();
+  const tapGap = now - lastTapTime;
+  lastTapTime = now;
+
+  const rect = e.currentTarget.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+
+  if (tapGap < 300) {
+    // 💋 DOUBLE TAP
+    kissSound.currentTime = 0;
+    kissSound.play();
+    createBurst(x, y, "💋", 10);
+  } else {
+    // 💗 SINGLE TAP (delay to check double tap)
+    setTimeout(() => {
+      if (Date.now() - lastTapTime >= 300) {
+        loveSound.currentTime = 0;
+        loveSound.play();
+        createBurst(x, y, "💗", 8);
+      }
+    }, 300);
+  }
+}
 const imageSets = {
   A: ["pic1.jpg","pic2.jpg","pic3.jpg","pic4.jpg"],
   B: ["pic5.jpg","pic6.jpg","pic7.jpg","pic8.jpg"]
@@ -783,6 +862,41 @@ window.addEventListener("load",()=>{
       i.onload=()=>{loaded++;update();};
     }
   });
+});
+/* -------- SINGLE / DOUBLE TAP DETECT -------- */
+document.querySelectorAll(".page-gif").forEach(sticker => {
+  let tapCount = 0;
+  let tapTimer = null;
+
+  // sticker ke clickable kora
+  sticker.style.pointerEvents = "auto";
+
+  sticker.addEventListener("click", () => {
+    tapCount++;
+
+    if (tapCount === 1) {
+      tapTimer = setTimeout(() => {
+        // SINGLE TAP
+        loveSound.currentTime = 0;
+        loveSound.play();
+
+        tapCount = 0;
+      }, 250);
+    } 
+    else if (tapCount === 2) {
+      clearTimeout(tapTimer);
+
+      // DOUBLE TAP
+      kissSound.currentTime = 0;
+      kissSound.play();
+
+      tapCount = 0;
+    }
+  });
+});
+/* -------- ACTIVATE STICKER TAPS -------- */
+document.querySelectorAll(".page-gif").forEach(sticker => {
+  sticker.addEventListener("click", handleStickerTap);
 });
 </script>
 
