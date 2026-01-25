@@ -398,30 +398,22 @@ button:disabled{background:#ffc0d4}
 
 <body>
 <!-- LOADING SCREEN -->
-
-<div class="hearts" id="hearts"></div>
-
-<!-- PAGE 1 -->
-<section id="p1">
-  <div class="start-card">
-   <h1 class="bounce-in">Happy Valentine’s Day NODI 💖</h1>
-    <p class="subtitle">I made something special for you</p<div id="loader">
+<div id="loader">
   <img src="loader.gif" alt="Loading" class="loader-gif">
   <p>Loading love for you, Nodi 💗</p>
 
   <div class="loading-bar">
     <div class="loading-progress" id="loadingProgress"></div>
   </div>
+</div>
+  
+<div class="hearts" id="hearts"></div>
 
-  <p id="loadingText" style="
-    margin-top:12px;
-    font-size:14px;
-    color:#ff5c8a;
-    font-family:'Playfair Display',serif;
-  ">
-    0% closer to opening your Valentine gift 💗
-  </p>
-    </div>>
+<!-- PAGE 1 -->
+<section id="p1">
+  <div class="start-card">
+   <h1 class="bounce-in">Happy Valentine’s Day NODI 💖</h1>
+    <p class="subtitle">I made something special for you</p>
     <button onclick="go(2)">Open 💗</button>
   </div>
   <img src="kitty_intro.gif"
@@ -770,35 +762,16 @@ window.addEventListener("load",()=>{
   const bar=document.getElementById("loadingProgress");
 
   function update(){
-  const percent = Math.floor((loaded / preloadFiles.length) * 100);
-
-  bar.style.width = percent + "%";
-
-  const text = document.getElementById("loadingText");
-  if(text && percent < 100){
-    text.textContent = `${percent}% closer to opening your Valentine gift 💗`;
-
-    if(percent > 90){
-      text.textContent = "Almost there… your Valentine gift is ready 💗";
+    bar.style.width = Math.floor((loaded/preloadFiles.length)*100)+"%";
+    if(loaded===preloadFiles.length){
+      setTimeout(()=>{
+        document.getElementById("loader").style.display="none";
+        go(1);
+        initGame();
+      },800);
     }
   }
 
-  if(loaded === preloadFiles.length){
-    setTimeout(()=>{
-      document.getElementById("loader").style.display="none";
-      go(1);
-      initGame();
-    },800);
-  }
-  }
-  if(loaded === preloadFiles.length){
-    setTimeout(()=>{
-      document.getElementById("loader").style.display="none";
-      go(1);
-      initGame();
-    },800);
-  }
-  }
   preloadFiles.forEach(src=>{
     if(src.endsWith(".mp3")){
       const a=new Audio();
@@ -814,4 +787,4 @@ window.addEventListener("load",()=>{
 </script>
 
 </body>
-  </html>
+</html>
