@@ -610,7 +610,7 @@ burst.style.transform = "translate(-50%, -50%)";
     span.textContent = emoji;
 
     const angle = Math.random() * Math.PI * 2;
-    const distance = 70 + Math.random() * 60;
+    const distance = 110 + Math.random() * 80;
 
     span.style.setProperty("--x", Math.cos(angle) * distance + "px");
     span.style.setProperty("--y", Math.sin(angle) * distance + "px");
@@ -618,7 +618,7 @@ burst.style.transform = "translate(-50%, -50%)";
     burst.appendChild(span);
   }
 
-  e.currentTarget.appendChild(burst);
+  target.appendChild(burst);
   setTimeout(() => burst.remove(), 1400);
 }
 /* -------- STICKER TAP INTERACTION -------- */
