@@ -875,21 +875,23 @@ function openLetter(){
 function resetAll(){ location.reload(); }
 
 /* ---------------- LOADER ---------------- */
-window.addEventListener("load",()=>{
-  let loaded=0;
-  const bar=document.getElementById("loadingProgress");
 
   function update(){
     bar.style.width = Math.floor((loaded/preloadFiles.length)*100)+"%";
-    if(loaded===preloadFiles.length){
-      setTimeout(()=>{
-        document.getElementById("loader").style.display="none";
-        go(1);
-        initGame();
-      },800);
-    }
-  }
+  if(loaded === preloadFiles.length){
+  setTimeout(()=>{
+    document.getElementById("loader").style.display="none";
+    go(1);
+    initGame();
 
+    const bubble = document.getElementById("bubble1");
+    if(bubble){
+      bubble.style.opacity = "1";
+      setTimeout(() => bubble.style.opacity = "0", 2000);
+    }
+
+  },800);
+}
   preloadFiles.forEach(src=>{
     if(src.endsWith(".mp3")){
       const a=new Audio();
