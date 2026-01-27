@@ -865,3 +865,40 @@ window.addEventListener("load",()=>{
 });
 /* -------- SINGLE / DOUBLE TAP DETECT -------- */
 document.querySelectorAll(".page-gif").forEach(sticker => {
+  let tapCount = 0;
+  let tapTimer = null;
+
+  // sticker ke clickable kora
+  sticker.style.pointerEvents = "auto";
+
+  sticker.addEventListener("click", () => {
+    tapCount++;
+
+    if (tapCount === 1) {
+      tapTimer = setTimeout(() => {
+        // SINGLE TAP
+        loveSound.currentTime = 0;
+        loveSound.play();
+
+        tapCount = 0;
+      }, 250);
+    } 
+    else if (tapCount === 2) {
+      clearTimeout(tapTimer);
+
+      // DOUBLE TAP
+      kissSound.currentTime = 0;
+      kissSound.play();
+
+      tapCount = 0;
+    }
+  });
+});
+/* -------- ACTIVATE STICKER TAPS -------- */
+document.querySelectorAll(".page-gif").forEach(sticker => {
+  sticker.addEventListener("click", handleStickerTap);
+});
+</script>
+
+</body>
+</html>
