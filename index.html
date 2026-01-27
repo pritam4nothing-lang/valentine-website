@@ -416,38 +416,6 @@ button:disabled{background:#ffc0d4}
     opacity: 0;
   }
 }
-.sticker-wrap{
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-}
-
-.speech-bubble{
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #ff5c8a;
-  color: white;
-  padding: 8px 14px;
-  border-radius: 16px;
-  font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-.speech-bubble::after{
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: #ff5c8a transparent transparent transparent;
-}
 </style>
 </head>
 
@@ -471,16 +439,9 @@ button:disabled{background:#ffc0d4}
     <p class="subtitle">I made something special for you</p>
     <button onclick="go(2)">Open 💗</button>
   </div>
-  <div class="sticker-wrap">
   <img src="kitty_intro.gif"
-       class="page-gif"
-       id="sticker1"
-       style="bottom:20px; right:20px;">
-
-  <div class="speech-bubble" id="bubble1">
-    Welcome 💕
-  </div>
-</div>
+     class="page-gif"
+     style="bottom:20px; right:20px;">
 </section>
 
 <!-- PAGE 2 GAME -->
@@ -875,23 +836,21 @@ function openLetter(){
 function resetAll(){ location.reload(); }
 
 /* ---------------- LOADER ---------------- */
+window.addEventListener("load",()=>{
+  let loaded=0;
+  const bar=document.getElementById("loadingProgress");
 
   function update(){
     bar.style.width = Math.floor((loaded/preloadFiles.length)*100)+"%";
-  if(loaded === preloadFiles.length){
-  setTimeout(()=>{
-    document.getElementById("loader").style.display="none";
-    go(1);
-    initGame();
-
-    const bubble = document.getElementById("bubble1");
-    if(bubble){
-      bubble.style.opacity = "1";
-      setTimeout(() => bubble.style.opacity = "0", 2000);
+    if(loaded===preloadFiles.length){
+      setTimeout(()=>{
+        document.getElementById("loader").style.display="none";
+        go(1);
+        initGame();
+      },800);
     }
+  }
 
-  },800);
-}
   preloadFiles.forEach(src=>{
     if(src.endsWith(".mp3")){
       const a=new Audio();
@@ -904,22 +863,5 @@ function resetAll(){ location.reload(); }
     }
   });
 });
-
-/* -------- ACTIVATE STICKER TAPS -------- */
+/* -------- SINGLE / DOUBLE TAP DETECT -------- */
 document.querySelectorAll(".page-gif").forEach(sticker => {
-  sticker.addEventListener("click", handleStickerTap);
-});
-window.addEventListener("load", () => {
-  const bubble = document.getElementById("bubble1");
-
-  bubble.style.opacity = "1";
-
-  setTimeout(() => {
-    bubble.style.opacity = "0";
-  }, 2000);
-});
-
-</script>
-
-</body>
-</html>
