@@ -416,6 +416,56 @@ button:disabled{background:#ffc0d4}
     opacity: 0;
   }
 }
+/* SONG CHOICE PAGE */
+.song-choice{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+
+.song-title{
+  font-family:'Playfair Display',serif;
+  color:#ff5c8a;
+  font-size:36px;
+  margin-bottom:30px;
+  text-align:center;
+}
+
+.choice-wrap{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
+}
+
+.choice-bear{
+  width:220px;
+  max-width:70vw;
+  pointer-events:none;
+}
+
+.choice-btn{
+  padding:14px 22px;
+  border:none;
+  border-radius:28px;
+  background:#ff5c8a;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(255,92,138,.35);
+  white-space:nowrap;
+}
+
+.choice-btn.left{
+  transform:translateX(-10px);
+}
+
+.choice-btn.right{
+  transform:translateX(10px);
+}
 </style>
 </head>
 
@@ -455,10 +505,20 @@ button:disabled{background:#ffc0d4}
 </section>
 
 <!-- SONG CHOICE -->
-<section id="pSongChoice">
-  <h1>Play the Song 💗</h1>
-  <button onclick="chooseSong('hug')">If you want to hug me 🤗</button>
-  <button onclick="chooseSong('kiss')">If you want to kiss me 💋</button>
+<section id="pSongChoice" class="song-choice">
+  <h1 class="song-title">Play the Song 💗</h1>
+
+  <div class="choice-wrap">
+    <button class="choice-btn left" onclick="chooseSong('hug')">
+      If you want to hug me 🤗
+    </button>
+
+    <img src="bear_choice.png" class="choice-bear" alt="Bear Choice">
+
+    <button class="choice-btn right" onclick="chooseSong('kiss')">
+      If you want to kiss me 💋
+    </button>
+  </div>
 </section>
 
 <!-- MUSIC -->
